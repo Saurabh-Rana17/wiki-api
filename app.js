@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const { log } = require("console");
 
 main().catch((err) => console.log(err));
 
@@ -15,6 +16,19 @@ async function main() {
   app.get("/articles", async function (req, res) {
     let newData = await article.find();
     res.send(newData);
+  });
+
+  app.post("/articles", async function (req, res) {
+    const newArticle = article.create({
+      tile: req.body.title,
+      data: req.body.data,
+    });
+    res.send("added successfully");
+  });
+
+  app.delete("/articles", async function (req, res) {
+    await article.deleteMany();
+    res.send("deleted successfully");
   });
 }
 
