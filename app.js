@@ -62,6 +62,12 @@ async function main() {
         }
       );
       res.send("successfully patched");
+    })
+    .delete(async function (req, res) {
+      await article.deleteOne({
+        title: req.params.articleTitle,
+      });
+      res.send("deleted");
     });
 }
 
