@@ -13,7 +13,7 @@ async function main() {
     data: String,
   });
   let article = new mongoose.model("article", articleSchema);
-
+  // tartgetting all articles -----------------------------------------------
   app
     .route("/articles")
     .get(async function (req, res) {
@@ -22,7 +22,7 @@ async function main() {
     })
     .post(async function (req, res) {
       const newArticle = article.create({
-        tile: req.body.title,
+        title: req.body.title,
         data: req.body.data,
       });
       res.send("added successfully");
@@ -30,6 +30,27 @@ async function main() {
     .delete(async function (req, res) {
       await article.deleteMany();
       res.send("deleted successfully");
+    });
+  // tartgetting a specific article-----------------------------------------------------------
+  app
+    .route("/articles/:articleTitle")
+    .get(async function (req, res) {
+      let recvedArticle = await article.findOne({
+        title: req.params.articleTitle,
+      });
+      res.send(recvedArticle);
+    })
+    .put(async function (req, res) {
+      await article.updateOne(
+        {
+          title: req.params.articleTitle,
+        },
+        {
+          title: req.body.title,
+          data: req.body.data,
+        }
+      );
+      res.send("changed value");
     });
 }
 
