@@ -46,11 +46,22 @@ async function main() {
           title: req.params.articleTitle,
         },
         {
-          title: req.body.title,
+          //   title: req.body.title,
           data: req.body.data,
         }
       );
       res.send("changed value");
+    })
+    .patch(async function (req, res) {
+      await article.updateOne(
+        {
+          title: req.params.articleTitle,
+        },
+        {
+          $set: req.body,
+        }
+      );
+      res.send("successfully patched");
     });
 }
 
