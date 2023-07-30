@@ -13,23 +13,24 @@ async function main() {
     data: String,
   });
   let article = new mongoose.model("article", articleSchema);
-  app.get("/articles", async function (req, res) {
-    let newData = await article.find();
-    res.send(newData);
-  });
 
-  app.post("/articles", async function (req, res) {
-    const newArticle = article.create({
-      tile: req.body.title,
-      data: req.body.data,
+  app
+    .route("/articles")
+    .get(async function (req, res) {
+      let newData = await article.find();
+      res.send(newData);
+    })
+    .post(async function (req, res) {
+      const newArticle = article.create({
+        tile: req.body.title,
+        data: req.body.data,
+      });
+      res.send("added successfully");
+    })
+    .delete(async function (req, res) {
+      await article.deleteMany();
+      res.send("deleted successfully");
     });
-    res.send("added successfully");
-  });
-
-  app.delete("/articles", async function (req, res) {
-    await article.deleteMany();
-    res.send("deleted successfully");
-  });
 }
 
 const app = express();
